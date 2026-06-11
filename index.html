@@ -439,11 +439,11 @@ Authorization: Bearer &lt;user_jwt&gt;
 <div class="waitlist" id="waitlist">
   <h2>Get early access</h2>
   <p>We're onboarding in batches. Drop your email and we'll reach out.</p>
-  <form class="waitlist-form" action="https://formspree.io/f/xrevypkd" method="POST">
-    <input type="hidden" name="_next" value="https://billt.xyz/#waitlist" />
-    <input type="email" name="email" placeholder="you@startup.com" required />
+  <form class="waitlist-form" id="waitlist-form">
+    <input type="email" id="waitlist-email" placeholder="you@startup.com" required />
     <button type="submit" class="btn-primary">Notify me</button>
   </form>
+  <div id="success" style="display:none;font-size:14px;color:#111;margin-top:12px;">You're on the list. We'll be in touch.</div>
 </div>
 
 <footer>
@@ -457,6 +457,18 @@ Authorization: Bearer &lt;user_jwt&gt;
 </footer>
 
 <script>
+  document.getElementById('waitlist-form').addEventListener('submit', async function(e) {
+    e.preventDefault()
+    const email = document.getElementById('waitlist-email').value
+    await fetch('https://formspree.io/f/xrevypkd', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({ email })
+    })
+    this.style.display = 'none'
+    document.getElementById('success').style.display = 'block'
+  })
+
   // scroll-triggered fade-in
   const els = document.querySelectorAll('.compare-section, .features, .code-block, .pricing, .waitlist')
   const observer = new IntersectionObserver((entries) => {
