@@ -460,11 +460,16 @@ Authorization: Bearer &lt;user_jwt&gt;
   document.getElementById('waitlist-form').addEventListener('submit', async function(e) {
     e.preventDefault()
     const email = document.getElementById('waitlist-email').value
-    await fetch('https://formspree.io/f/xrevypkd', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-      body: JSON.stringify({ email })
-    })
+    const btn = this.querySelector('button')
+    btn.disabled = true
+    btn.textContent = '...'
+    try {
+      await fetch('https://formspree.io/f/xrevypkd', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({ email })
+      })
+    } catch(err) {}
     this.style.display = 'none'
     document.getElementById('success').style.display = 'block'
   })
@@ -480,7 +485,6 @@ Authorization: Bearer &lt;user_jwt&gt;
     })
   }, { threshold: 0.1 })
   els.forEach(el => observer.observe(el))
-
 </script>
 
 </body>
